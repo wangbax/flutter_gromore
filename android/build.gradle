@@ -41,7 +41,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    namespace "net.niuxiaoer.flutter_gromore"
     compileSdkVersion 30
 
     compileOptions {
@@ -58,7 +57,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
     }
 }
 
