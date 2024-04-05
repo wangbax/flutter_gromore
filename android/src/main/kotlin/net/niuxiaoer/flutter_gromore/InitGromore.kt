@@ -2,6 +2,8 @@ package net.niuxiaoer.flutter_gromore
 
 import android.content.Context
 import android.util.Log
+//import android.widget.ImageView
+//import com.bytedance.mtesttools.api.TTMediationTestTool
 import com.bytedance.sdk.openadsdk.TTAdConfig
 import com.bytedance.sdk.openadsdk.TTAdSdk
 import com.bytedance.sdk.openadsdk.mediation.init.MediationConfig
@@ -10,7 +12,8 @@ import io.flutter.plugin.common.MethodChannel
 import org.json.JSONObject
 import java.io.InputStream
 
-class InitGromore(private val context: Context) : TTAdSdk.InitCallback {
+
+class InitGromore(private val context: Context) : TTAdSdk.Callback {
     private val TAG: String = this::class.java.simpleName
     private lateinit var initResult: MethodChannel.Result
     // 由于失败后会进行重试，可能会回调多次。这个flag标识是否调用
@@ -42,11 +45,13 @@ class InitGromore(private val context: Context) : TTAdSdk.InitCallback {
                 .appId(appId)
                 .appName(appName)
                 .useMediation(useMediation)
+                .themeStatus(1) // 设置主题类型，0：正常模式；1：夜间模式；默认为0；传非法值，按照0处理
                 .setMediationConfig(MediationConfig.Builder().setCustomLocalConfig(loadLocalConfig()).build())
                 .debug(debug)
                 .build()
 
-        TTAdSdk.init(context, config, this)
+        TTAdSdk.init(context, config)
+        TTAdSdk.start(this)
     }
 
     /**
@@ -73,6 +78,13 @@ class InitGromore(private val context: Context) : TTAdSdk.InitCallback {
         }
         resultCalled = true
         initResult.success(true)
+
+//        TTMediationTestTool.launchTestTools(context, object : TTMediationTestTool.ImageCallBack {
+//            override fun loadImage(p0: ImageView?, p1: String?) {
+//
+//            }
+//        })
+
     }
 
     override fun fail(p0: Int, p1: String?) {

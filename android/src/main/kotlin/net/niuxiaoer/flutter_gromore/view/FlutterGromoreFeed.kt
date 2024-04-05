@@ -2,18 +2,19 @@ package net.niuxiaoer.flutter_gromore.view
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.bytedance.sdk.openadsdk.TTAdDislike
 import com.bytedance.sdk.openadsdk.TTFeedAd
+import com.bytedance.sdk.openadsdk.TTNativeAd
 import com.bytedance.sdk.openadsdk.mediation.ad.MediationExpressRenderListener
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
 import net.niuxiaoer.flutter_gromore.constants.FlutterGromoreConstants
 import net.niuxiaoer.flutter_gromore.manager.FlutterGromoreFeedCache
+import net.niuxiaoer.flutter_gromore.utils.FeedAdUtils
 import net.niuxiaoer.flutter_gromore.utils.Utils
 
 
@@ -26,7 +27,8 @@ class FlutterGromoreFeed(
 ) :
         FlutterGromoreBase(binaryMessenger, "${FlutterGromoreConstants.feedViewTypeId}/$viewId"),
         PlatformView,
-        TTAdDislike.DislikeInteractionCallback, MediationExpressRenderListener {
+        TTAdDislike.DislikeInteractionCallback, MediationExpressRenderListener,
+        TTNativeAd.AdInteractionListener {
 
     private val TAG: String = this::class.java.simpleName
 
@@ -57,17 +59,30 @@ class FlutterGromoreFeed(
         mGMNativeAd?.takeIf {
             it.mediationManager.isReady
         }?.let {
+            Log.e(TAG, "showAd: ${it.title} ")
 
-            // 是否有不喜欢按钮
-            if (it.mediationManager.hasDislike()) {
-                it.setDislikeCallback(activity, this)
-            }
-
+            // 模板feed流广告
             if (it.mediationManager.isExpress) {
-                it.setExpressRenderListener(this)
-            }
+                // 是否有不喜欢按钮
+                if (it.mediationManager.hasDislike()) {
+                    it.setDislikeCallback(activity, this)
+                }
 
-            it.render()
+                if (it.mediationManager.isExpress) {
+                    it.setExpressRenderListener(this)
+                }
+
+                it.render()
+            } else {
+                // 自渲染广告返回的是广告素材，开发者自己将其渲染成view
+                val feedView =
+                    FeedAdUtils.getFeedAdFromFeedInfo(it, activity, null, this)
+                if (feedView != null) {
+                    (feedView.parent as? ViewGroup)?.removeView(feedView)
+                    container.removeAllViews()
+                    container.addView(feedView)
+                }
+            }
         }
     }
 
@@ -112,7 +127,7 @@ class FlutterGromoreFeed(
 
         ad?.apply {
             container.removeAllViews()
-            container.setBackgroundColor(Color.WHITE)
+            container.setBackgroundColor(0xFF1A1A1A.toInt())
             container.addView(ad)
             if (height > 0) {
                 postMessage(
@@ -159,5 +174,20 @@ class FlutterGromoreFeed(
 
     override fun initAd() {
         showAd()
+    }
+
+    override fun onAdClicked(p0: View?, p1: TTNativeAd?) {
+        Log.d(TAG, "onAdClick")
+        postMessage("onAdClick")
+    }
+
+    override fun onAdCreativeClick(p0: View?, p1: TTNativeAd?) {
+        Log.d(TAG, "onAdCreativeClick")
+        postMessage("onAdCreativeClick")
+    }
+
+    override fun onAdShow(p0: TTNativeAd?) {
+        Log.d(TAG, "onAdShow")
+        postMessage("onAdShow")
     }
 }

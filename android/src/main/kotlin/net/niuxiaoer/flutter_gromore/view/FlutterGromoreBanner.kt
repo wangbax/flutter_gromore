@@ -112,7 +112,7 @@ class FlutterGromoreBanner(
         ad?.let {
             (it as? ViewGroup)?.removeView(ad)
             container.removeAllViews()
-            container.setBackgroundColor(Color.WHITE)
+            container.setBackgroundColor(Color.BLACK)
             container.addView(ad, FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
