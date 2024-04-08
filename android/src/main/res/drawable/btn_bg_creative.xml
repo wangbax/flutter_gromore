@@ -3,5 +3,5 @@
     android:shape="rectangle"
     >
     <corners android:radius="60dp" />
-    <stroke android:color="#B22222" android:width="1dp"/>
+    <stroke android:color="@color/gromore_feed_brand_color" android:width="1dp"/>
 </shape>

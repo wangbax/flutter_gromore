@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="gromore_feed_bg_color">#FF1A1A1A</color>
+  <color name="gromore_feed_title_color">#FFFFFFFF</color>
+  <color name="gromore_feed_desc_color">#FFB2B2B2</color>
+  <color name="gromore_feed_brand_color">#FF9F70FA</color>
+</resources>

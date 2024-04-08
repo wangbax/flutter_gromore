@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ad_title_creative_btn_layout"
-    android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:layout_below="@+id/iv_listitem_image"
-    android:layout_marginBottom="2dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#F4F5F7">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/ad_title_creative_btn_layout"
+  android:layout_width="match_parent"
+  android:layout_height="45dp"
+  android:layout_below="@+id/iv_listitem_image"
+  android:layout_marginBottom="2dp"
+  android:layout_marginLeft="10dp"
+  android:layout_marginRight="10dp"
+  tools:background="@color/gromore_feed_bg_color">
 
     <TextView
         android:id="@+id/tv_listitem_ad_title"
@@ -21,6 +22,7 @@
         android:layout_toStartOf="@+id/btn_listitem_creative"
         android:gravity="center_vertical"
         android:singleLine="true"
+        android:textColor="@color/gromore_feed_title_color"
         android:text="计策略，才真三国！"
         android:textSize="18sp" />
 
@@ -37,6 +39,6 @@
         android:background="@drawable/btn_bg_creative"
         android:gravity="center"
         android:text="立即下载"
-        android:textColor="#B22222"
+        android:textColor="@color/gromore_feed_brand_color"
         android:textSize="14sp" />
 </RelativeLayout>
