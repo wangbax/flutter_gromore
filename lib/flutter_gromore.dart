@@ -186,4 +186,13 @@ class FlutterGromore {
       return false;
     }
   }
+
+  /// 设置oaid
+  static Future<bool> setOAID(String? oaid) async {
+    try {
+      return await _methodChannel.invokeMethod("setOAID", {"oaid": oaid});
+    } catch (_) {
+      return false;
+    }
+  }
 }

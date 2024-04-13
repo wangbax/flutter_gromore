@@ -78,6 +78,13 @@ class PluginDelegate(
                 require(arguments != null && arguments["rewardId"] != null)
                 FlutterGromoreReward(activity, binaryMessenger, arguments, result)
             }
+            // set oaid
+            "setOAID" -> {
+                arguments?.get("oaid")?.toString()?.also {
+                    InitGromore.oaid = it
+                }
+                result.success(true)
+            }
             else -> {
                 Log.d(TAG, "unknown method $method")
                 result.success(true)

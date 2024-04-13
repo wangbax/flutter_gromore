@@ -6,6 +6,7 @@ import android.util.Log
 //import com.bytedance.mtesttools.api.TTMediationTestTool
 import com.bytedance.sdk.openadsdk.TTAdConfig
 import com.bytedance.sdk.openadsdk.TTAdSdk
+import com.bytedance.sdk.openadsdk.TTCustomController
 import com.bytedance.sdk.openadsdk.mediation.init.MediationConfig
 import io.flutter.BuildConfig
 import io.flutter.plugin.common.MethodChannel
@@ -18,6 +19,12 @@ class InitGromore(private val context: Context) : TTAdSdk.Callback {
     private lateinit var initResult: MethodChannel.Result
     // 由于失败后会进行重试，可能会回调多次。这个flag标识是否调用
     private var resultCalled: Boolean = false
+
+   companion object {
+       // oaid
+       var oaid: String? = null
+
+   }
 
     // 初始化SDK
     fun initSDK(arguments: Map<String, Any?>?, result: MethodChannel.Result) {
@@ -46,6 +53,11 @@ class InitGromore(private val context: Context) : TTAdSdk.Callback {
                 .appName(appName)
                 .useMediation(useMediation)
                 .themeStatus(1) // 设置主题类型，0：正常模式；1：夜间模式；默认为0；传非法值，按照0处理
+                .customController(object : TTCustomController() {
+                    override fun getDevOaid(): String? {
+                        return oaid
+                    }
+                })
                 .setMediationConfig(MediationConfig.Builder().setCustomLocalConfig(loadLocalConfig()).build())
                 .debug(debug)
                 .build()
