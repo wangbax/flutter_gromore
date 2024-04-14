@@ -3,6 +3,7 @@ package net.niuxiaoer.flutter_gromore.manager
 import android.content.Context
 import android.util.Log
 import com.bytedance.sdk.openadsdk.AdSlot
+import com.bytedance.sdk.openadsdk.TTAdLoadType
 import com.bytedance.sdk.openadsdk.TTAdNative
 import com.bytedance.sdk.openadsdk.TTAdSdk
 import com.bytedance.sdk.openadsdk.TTFeedAd
@@ -40,6 +41,7 @@ class FlutterGromoreFeedManager(private val params: Map<String, Any?>,
         val adslot = AdSlot.Builder()
                 .setCodeId(adUnitId)
                 .setImageAcceptedSize(width, height)
+                .setAdLoadType(TTAdLoadType.LOAD)
 //                .setExpressViewAcceptedSize(width.toFloat(), height.toFloat())
 //                .setExpressViewAcceptedSize(width.toFloat() / Utils.getDensity(context),
 //                  height.toFloat() / Utils.getDensity(context))

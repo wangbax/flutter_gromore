@@ -2,6 +2,7 @@ package net.niuxiaoer.flutter_gromore.view
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,9 @@ class FlutterGromoreFeed(
 
     private val cachedAdId: String
 
+    // 修复问题缓存的当前布局
+    private var ad: View? = null
+
     init {
         container.layoutParams = layoutParams
         cachedAdId = creationParams["feedId"] as String
@@ -52,6 +56,11 @@ class FlutterGromoreFeed(
         mGMNativeAd =
                 FlutterGromoreFeedCache.getCacheFeedAd(cachedAdId)
         initAd()
+        // 安卓14 进入后台移除，进入前台post添加广告，避免白屏问题
+        // 后期关注是否可以删除
+        if (Build.VERSION.SDK_INT >= 34) {
+            activity.application?.registerActivityLifecycleCallbacks(this)
+        }
     }
 
     private fun showAd() {
@@ -90,11 +99,30 @@ class FlutterGromoreFeed(
         container.removeAllViews()
         mGMNativeAd?.destroy()
         mGMNativeAd = null
+        ad = null
         FlutterGromoreFeedCache.removeCacheFeedAd(cachedAdId)
+        activity.application?.unregisterActivityLifecycleCallbacks(this)
     }
 
     override fun getView(): View {
         return container
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+        super.onActivityStopped(activity)
+        ad = container.getChildAt(0)
+        container.removeAllViews()
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        super.onActivityResumed(activity)
+        if (ad != null && container.childCount == 0) {
+            container.post {
+                if (ad != null && container.childCount == 0) {
+                    container.addView(ad)
+                }
+            }
+        }
     }
 
     override fun dispose() {
