@@ -34,8 +34,6 @@ class FlutterGromoreFeedManager(private val params: Map<String, Any?>,
         // 用户id
         var user_id = params["userId"] as? Int ?: 0
 
-        var trans_id = params["userId"] as? Int ?: 0
-
         require(adUnitId.isNotEmpty())
         require(count > 0)
 
@@ -47,7 +45,6 @@ class FlutterGromoreFeedManager(private val params: Map<String, Any?>,
                 .setImageAcceptedSize(width, height)
                 .setAdLoadType(TTAdLoadType.LOAD)
                 .setExtraObject("user_id", user_id) //服务端奖励验证透传参数
-                .setExtraObject("trans_id", trans_id) //服务端奖励验证透传参数
 //                .setExpressViewAcceptedSize(width.toFloat(), height.toFloat())
 //                .setExpressViewAcceptedSize(width.toFloat() / Utils.getDensity(context),
 //                  height.toFloat() / Utils.getDensity(context))
