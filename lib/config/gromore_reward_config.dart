@@ -17,17 +17,13 @@ class GromoreRewardConfig extends GromoreBaseAdConfig {
   // 用户id
   final String? userId;
 
-  // transId
-  final String? transId;
-
-  GromoreRewardConfig({required this.adUnitId, this.userId, this.transId, this.orientation, this.muted, this.volume});
+  GromoreRewardConfig({required this.adUnitId, this.userId,this.orientation, this.muted, this.volume});
 
   @override
   Map toJson() {
     Map<String, dynamic> result = {
       "adUnitId": adUnitId,
-      "userId": transId,
-      "transId": transId,
+      "userId": userId,
       "orientation": orientation,
       "muted": muted,
       "volume": volume,
