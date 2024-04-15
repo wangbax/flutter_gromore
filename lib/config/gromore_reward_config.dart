@@ -14,19 +14,23 @@ class GromoreRewardConfig extends GromoreBaseAdConfig {
   /// 音量，默认为0
   final double? volume;
 
-  GromoreRewardConfig(
-      {required this.adUnitId,
-      this.orientation,
-      this.muted,
-      this.volume});
+  // 用户id
+  final String? userId;
+
+  // transId
+  final String? transId;
+
+  GromoreRewardConfig({required this.adUnitId, this.userId, this.transId, this.orientation, this.muted, this.volume});
 
   @override
   Map toJson() {
     Map<String, dynamic> result = {
       "adUnitId": adUnitId,
+      "userId": transId,
+      "transId": transId,
       "orientation": orientation,
       "muted": muted,
-      "volume": volume
+      "volume": volume,
     };
 
     result.removeWhere((key, value) => value == null);
