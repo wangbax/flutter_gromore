@@ -27,16 +27,18 @@ class FlutterGromoreRewardManager(private val params: Map<String, Any?>,
         var volume = params["volume"] as? Float ?: 0f
         // 播放方向。竖屏：1，横屏：2。默认竖屏
         var orientation = params["orientation"] as? Int ?: 1
+        var userId = params["userId"] as? String
 
         require(!adUnitId.isNullOrEmpty())
 
         val adNativeLoader = TTAdSdk.getAdManager().createAdNative(activity)
-
+        print("激励视频:" + userId);
         val adslot = AdSlot.Builder()
-                .setCodeId(adUnitId) // 广告位id
-                .setAdCount(1) // 请求的广告数
-                .setOrientation(orientation)
-                .setMediationAdSlot(
+            .setCodeId(adUnitId) // 广告位id
+            .setAdCount(1) // 请求的广告数
+            .setOrientation(orientation)
+            .setUserID(userId)
+            .setMediationAdSlot(
                         MediationAdSlot.Builder()
                                 .setMuted(muted)
                                 .setVolume(volume)
